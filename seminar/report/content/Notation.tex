@@ -1,0 +1,31 @@
+\section {Notation}
+
+\begin{itemize}
+    \item \textbf{Implementation:}
+    \begin{itemize}
+        \item A Quad-Tree is implemented as a hierarchical tree structure where each internal node has exactly four children corresponding to four spatial quadrants.
+        \item Each node stores information about a specific region of the space. The node may either be a \textit{leaf node}, representing a uniform region, or an \textit{internal node} that subdivides the region into four smaller subregions.
+        \item The tree is typically constructed using a recursive divide-and-conquer strategy. If a region satisfies a stopping condition (for example, uniform data or minimum region size), a leaf node is created. Otherwise, the region is subdivided into four equal quadrants.
+        \item Each recursive step creates four child nodes representing the top-left, top-right, bottom-left, and bottom-right subregions.
+        \item Quad-Trees are commonly used for spatial partitioning problems such as image compression, collision detection, and geographic information systems.
+    \end{itemize}
+    \item \textbf{Time Complexity:} $\mathcal{O}(n^2 \log n)$ where $n$ is the side length of the grid.\\
+    The analysis breaks down as follows:
+    \begin{itemize}
+        \item In the worst case, the Quad-Tree needs to be fully constructed when no regions can be merged into leaves.
+        \item The recursion depth is $\log_2 n$ (since we divide the grid into quarters at each level).
+        \item At each level $k$ of the recursion tree, there are $4^k$ subproblems.
+        \item Each subproblem at level $k$ processes a grid of size $(n/2^k) \times (n/2^k) = \frac{n^2}{4^k}$ elements.
+        \item Total work at level $k$: $4^k \times \frac{n^2}{4^k} = n^2$.
+        \item Since there are $\log_2 n$ levels, the total time complexity is $\mathcal{O}(n^2 \log n)$.
+    \end{itemize}
+    
+    \item \textbf{Space Complexity:} $\mathcal{O}(n^2)$
+    \begin{itemize}
+        \item \textbf{Recursion stack:} $\mathcal{O}(\log n)$ — The maximum depth of recursion is $\log_2 n$ when dividing the grid into quarters.
+        \item \textbf{Quad-Tree nodes:} $\mathcal{O}(n^2)$ — In the worst case where no merging is possible, we create $\mathcal{O}(n^2)$ nodes (approximately $\frac{4^{\log n} - 1}{3} = \frac{n^2 - 1}{3}$ internal nodes plus leaf nodes).
+        \item The dominant factor is the space for storing the Quad-Tree nodes, resulting in $\mathcal{O}(n^2)$ total space complexity.
+    \end{itemize}
+\end{itemize}
+
+\clearpage

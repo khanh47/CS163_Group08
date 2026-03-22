@@ -1,0 +1,178 @@
+\subsection {\href{https://leetcode.com/problems/construct-quad-tree/}{Construct Quad Tree (LeetCode 427)}}
+
+\subsection*{Problem Description}
+
+This problem asks us to construct a Quad-Tree representation from an $n \times n$ binary matrix.
+
+A Quad-Tree is a tree data structure where each internal node has exactly four children representing the four quadrants: top-left, top-right, bottom-left, and bottom-right. Each node in the tree has two properties:
+
+\begin{itemize}
+\item \textbf{val}: A boolean value (True for 1s, False for 0s)
+\item \textbf{isLeaf}: A boolean indicating whether the node is a leaf (True) or has four children (False)
+\end{itemize}
+
+The construction follows these rules:
+
+\begin{itemize}
+
+\item \textbf{If a region contains all the same values} (all 0s or all 1s):
+
+\begin{itemize}
+\item Create a leaf node with \texttt{isLeaf = True}
+\item Set \texttt{val} to the grid's value (True for 1, False for 0)
+\item The four children are set to null
+\end{itemize}
+
+\item \textbf{If a region contains mixed values} (both 0s and 1s):
+
+\begin{itemize}
+\item Create an internal node with \texttt{isLeaf = False}
+\item Set \texttt{val} to any value (it doesn't matter since it's not a leaf)
+\item Divide the current region into four equal quadrants
+\item Recursively construct four children nodes for each quadrant
+\end{itemize}
+
+\end{itemize}
+
+\subsection*{Solution Approach}
+
+This solution uses a divide-and-conquer recursion to construct the Quad-Tree. Here is how the algorithm works step by step.
+
+\textbf{Step 1: Check if the current region is uniform}
+
+\begin{lstlisting}[language=C++,breaklines=true,breakatwhitespace=false,columns=fullflexible,basicstyle=\ttfamily\small]
+bool isSame(vector<vector<int>>& grid, int r, int c, int size){
+    int val = grid[r][c];
+    for(int i = r; i < r + size; i++){
+        for(int j = c; j < c + size; j++){
+            if(grid[i][j] != val) return false;
+        }
+    }
+    return true;
+}
+\end{lstlisting}
+
+\begin{itemize}
+
+\item We check whether all cells in the current square region have the same value.
+
+\item If the region is uniform, we create a leaf node and stop recursion.
+
+\end{itemize}
+
+\textbf{Step 2: Recursively divide the region}
+
+\begin{lstlisting}[language=C++,breaklines=true,breakatwhitespace=false,columns=fullflexible,basicstyle=\ttfamily\small]
+Node* build(vector<vector<int>>& grid, int r, int c, int size){
+    if(isSame(grid, r, c, size)){
+        return new Node(grid[r][c], true);
+    }
+
+    int half = size / 2;
+
+    Node* topLeft = build(grid, r, c, half);
+    Node* topRight = build(grid, r, c + half, half);
+    Node* bottomLeft = build(grid, r + half, c, half);
+    Node* bottomRight = build(grid, r + half, c + half, half);
+
+    return new Node(true, false, topLeft, topRight, bottomLeft, bottomRight);
+}
+\end{lstlisting}
+
+\begin{itemize}
+
+\item If the region contains mixed values, we divide the square into four equal quadrants.
+
+\item We recursively construct Quad-Trees for each quadrant.
+
+\item The current node becomes an internal node with four children.
+
+\end{itemize}
+
+\subsection*{Complexity Analysis}
+
+\begin{itemize}
+
+\item \textbf{Time Complexity}: $O(n^2 \log n)$ in the worst case because we may check each region multiple times during recursion.
+
+\item \textbf{Space Complexity}: $O(n^2)$ for the recursion tree and Quad-Tree nodes.
+\subsection*{Implementation}
+
+\begin{lstlisting}[language=C++,breaklines=true,breakatwhitespace=false,columns=fullflexible,basicstyle=\ttfamily\small]
+/*
+// Definition for a QuadTree node.
+class Node {
+public:
+    bool val;
+    bool isLeaf;
+    Node* topLeft;
+    Node* topRight;
+    Node* bottomLeft;
+    Node* bottomRight;
+    
+    Node() {
+        val = false;
+        isLeaf = false;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight,
+         Node* _bottomLeft, Node* _bottomRight) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = _topLeft;
+        topRight = _topRight;
+        bottomLeft = _bottomLeft;
+        bottomRight = _bottomRight;
+    }
+};
+*/
+
+class Solution {
+public:
+
+    bool isSame(vector<vector<int>>& grid, int r, int c, int size){
+        int val = grid[r][c];
+        for(int i = r; i < r + size; i++){
+            for(int j = c; j < c + size; j++){
+                if(grid[i][j] != val) return false;
+            }
+        }
+        return true;
+    }
+
+    Node* build(vector<vector<int>>& grid, int r, int c, int size){
+        if(isSame(grid, r, c, size)){
+            return new Node(grid[r][c], true);
+        }
+
+        int half = size / 2;
+
+        Node* topLeft = build(grid, r, c, half);
+        Node* topRight = build(grid, r, c + half, half);
+        Node* bottomLeft = build(grid, r + half, c, half);
+        Node* bottomRight = build(grid, r + half, c + half, half);
+
+        return new Node(true, false, topLeft, topRight, bottomLeft, bottomRight);
+    }
+
+    Node* construct(vector<vector<int>>& grid) {
+        int n = grid.size();
+        return build(grid, 0, 0, n);
+    }
+};
+\end{lstlisting}
+
+\end{itemize}

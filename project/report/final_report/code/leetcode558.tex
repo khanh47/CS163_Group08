@@ -1,0 +1,72 @@
+/*
+// Definition for a QuadTree node.
+class Node {
+public:
+    bool val;
+    bool isLeaf;
+    Node* topLeft;
+    Node* topRight;
+    Node* bottomLeft;
+    Node* bottomRight;
+    
+    Node() {
+        val = false;
+        isLeaf = false;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight, 
+    Node* _bottomLeft, Node* _bottomRight) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = _topLeft;
+        topRight = _topRight;
+        bottomLeft = _bottomLeft;
+        bottomRight = _bottomRight;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* intersect(Node* quadTree1, Node* quadTree2) {
+		if (!quadTree1 && !quadTree2) return nullptr;
+		if (!quadTree1) return quadTree2;
+		if (!quadTree2) return quadTree1;
+		if (quadTree1->isLeaf && quadTree1->val) return quadTree1;
+		if (quadTree2->isLeaf && quadTree2->val) return quadTree2;
+		if (quadTree1->isLeaf && quadTree2->isLeaf) return quadTree1;
+		Node *cur = new Node(false, false);
+		cur->topLeft = intersect(quadTree1->topLeft, quadTree2->topLeft);
+		cur->topRight = intersect(quadTree1->topRight, quadTree2->topRight);
+		cur->bottomLeft = intersect(quadTree1->bottomLeft, quadTree2->bottomLeft);
+		cur->bottomRight = intersect(quadTree1->bottomRight, 
+        quadTree2->bottomRight);
+		if (cur->topLeft && cur->topRight && cur->bottomLeft && cur->bottomRight) {
+			if (cur->topLeft->isLeaf && cur->topRight->isLeaf 
+            && cur->bottomLeft->isLeaf && cur->bottomRight->isLeaf) {
+				if (cur->topLeft->val == cur->topRight->val 
+                && cur->topLeft->val == cur->bottomLeft->val 
+				&& cur->topLeft->val == cur->bottomRight->val) {
+					cur->isLeaf = true;
+					cur->val = cur->topLeft->val;
+					cur->topLeft = cur->topRight = 
+                    cur->bottomLeft = cur->bottomRight = nullptr;
+				}
+			}
+		}
+		return cur;
+    }
+};

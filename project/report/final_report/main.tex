@@ -1,0 +1,68 @@
+\documentclass[12pt]{article}
+
+\usepackage{hcmus-report-template}
+\usepackage[english]{babel}
+
+% Disable indentation on new paragraphs
+\setlength{\parindent}{0pt}
+
+% Line spacing 1.5
+\renewcommand{\baselinestretch}{1.5}
+
+% Optional: graphic path
+% \graphicspath{PATH_TO_GRAPHIC_FOLDER}
+
+% To use Times font family, uncomment this row
+% \usepackage{mathptmx}
+
+% To use roman section / subsection, uncomment these rows
+% \renewcommand{\thesection}{\Roman{section}}
+% \renewcommand{\thesubsection}{\thesection.\Roman{subsection}}
+
+% Define course name, report name and report title.
+\newcommand{\reportname}{CS163}
+\newcommand{\reporttitle}{PROJECT REPORT}
+
+\newcommand{\studentname}{
+    1. 25125052 - Võ Thành Đạt \\
+    2. 25125055 - Phạm Huy Khánh \\
+    3. 25125068 - Lê Phi Truyền \\
+    4. 25125089 - Lê Trọng Đại Nghĩa
+}
+\newcommand{\studentnametwo}{}
+
+
+% Header
+\lhead{\reporttitle}
+\rhead{
+University of Science - VNU HCM
+}
+
+% Footer
+
+
+% ============ DOCUMENT ============
+\usepackage[none]{hyphenat}
+\sloppy
+\begin{document}
+
+\pagenumbering{arabic}
+\input{content/title.tex}
+
+\tableofcontents
+\pagebreak
+
+\input{content/Summary}
+\input{content/Introduction}
+\input{content/Group Info}
+\input{content/Data Storage}
+\input{content/Architecture}
+\input{content/Implementation}
+\input{content/Features}
+\input{content/Conclusion}
+% References
+% \input{ref/ref.tex}
+
+% Appendix
+% \input{appendix/appendix}
+\end{document}

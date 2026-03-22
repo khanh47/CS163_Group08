@@ -1,0 +1,70 @@
+\subsection {\href{https://leetcode.com/problems/logical-or-of-two-binary-grids-represented-as-quad-trees/description/}{Logical OR of Two Quad-Trees (LeetCode 558)}}
+
+\subsection*{Problem Description}
+\vspace{-1.5em}
+\noindent\rule{\textwidth}{0.4pt}
+
+This problem asks us to merge two $n \times n$ binary matrices represented by Quad-Trees using a logical OR operation.\\
+A Quad-Tree is a tree data structure where each internal node has exactly four children representing the four quadrants: top-left, top-right, bottom-left, and bottom-right. Each node in the tree has two properties:
+\begin{itemize}
+    \item \texttt{val}: A boolean value (True for 1s, False for 0s)
+    \item \texttt{isLeaf}: A boolean indicating whether the node is a leaf (True) or has four children (False)
+\end{itemize}
+
+The construction follows these rules:
+\begin{itemize}
+    \item \textbf{If a region contains all the same values} (all 0s or all 1s):
+        \begin{itemize}
+            \item Create a leaf node with isLeaf = True
+            \item Set val to the grid's value (True for 1, False for 0)
+            \item The four children are set to null
+        \end{itemize}
+    \item \textbf{If a region contains mixed values} (both 0s and 1s):
+        \begin{itemize}
+            \item Create an internal node with isLeaf = False
+            \item Set val to any value (it doesn't matter since it's not a leaf)
+            \item Divide the current region into four equal quadrants
+            \item Recursively construct four children nodes for each quadrant
+        \end{itemize}
+\end{itemize}
+
+\subsection*{Solution Approach}
+\vspace{-1.5em}
+\noindent\rule{\textwidth}{0.4pt}
+
+This solution using recursion to construct the Quad-Tree. Here is how the solution works step by step.\\
+\textbf{Step 1: Base cases}
+\begin{lstlisting}[language=C++,linewidth=\linewidth]
+	if (!quadTree1 && !quadTree2) return nullptr;
+	if (!quadTree1) return quadTree2;
+	if (!quadTree2) return quadTree1;
+	if (quadTree1->isLeaf && quadTree1->val) return quadTree1;
+	if (quadTree2->isLeaf && quadTree2->val) return quadTree2;
+	if (quadTree1->isLeaf && quadTree2->isLeaf) return quadTree1;
+\end{lstlisting}
+\begin{itemize}
+    \item \textbf{Null checks:} If both tree is null, return null pointer. If either tree is null, the result simply inherits the remaining structure of the other tree.
+    \item \textbf{Dominant All \texttt{1's} Leaves:} If either \texttt{quadTree1} or \texttt{quadTree2} is a leaf node with \texttt{val=1}, it dominates the OR operation. 
+    \item \textbf{False Leaves:} If both nodes are leaves but both value is false, then return either tree.
+\end{itemize}
+\textbf{Step 2: Divide and merging}
+\begin{itemize}
+    \item If the base cases are not met, the current region must be subdivided.
+    \item We continue call \texttt{intersect} and calculate on four quadrants (topLeft, topRight, bottomLeft, bottomRight)
+    \item After the recursion returns from the four children, the current node evaluates them.
+    \item If all four children are leaf nodes and they all share the exact same boolean value, the subdivision is redundant. Then we must convert the current internal node into a leaf node and removes the redundant child nodes.
+\end{itemize}
+
+\subsection*{Complexity Analysis}
+\vspace{-1.5em}
+\noindent\rule{\textwidth}{0.4pt}
+
+\begin{itemize}
+    \item \textbf{Time Complexity:} $\mathcal{O}(n^2 \log n)$ where $n$ is the side length of the grid.
+    \item \textbf{Space Complexity:} $\mathcal{O}(n^2)$
+\end{itemize}
+
+\subsection*{Implementation} 
+\vspace{-1.5em}
+\noindent\rule{\textwidth}{0.4pt}
+\lstinputlisting[language=C++,numbers=none]{code/leetcode558.tex}

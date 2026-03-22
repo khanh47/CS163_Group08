@@ -1,0 +1,70 @@
+\subsection {Retrieve Cell Value in a Quad-Tree}
+
+\subsection*{Problem Description}
+
+Given a Quad-Tree that represents an $n \times n$ binary matrix and a specific coordinate $(r, c)$, where $0 \le r, c < n$, the task is to retrieve the value of the cell at that position without reconstructing the entire matrix.
+
+The Quad-Tree uses the same \texttt{Node} structure:
+\begin{itemize}
+\item \textbf{isLeaf}: True if the node represents a uniform region.
+\item \textbf{val}: The value of the region (if it is a leaf).
+\item \textbf{children}: \texttt{topLeft}, \texttt{topRight}, \texttt{bottomLeft}, \texttt{bottomRight} (if it is not a leaf).
+\end{itemize}
+
+\subsection*{Solution Approach}
+
+Because a Quad-Tree is a spatial partition, we can use the coordinates $(r, c)$ to decide which quadrant to move into at each step. This is a top-down traversal similar to searching in a Binary Search Tree, but with four branches.
+
+\textbf{Step 1: Base Case - Leaf Node}
+
+If the current node is a leaf (\texttt{isLeaf == true}), every cell within this quadrant has the same value. Therefore, the value at $(r, c)$ is simply \texttt{node->val}.
+
+\textbf{Step 2: Recursive Step - Determine the Quadrant}
+
+If the node is not a leaf, we calculate the midpoint of the current region ($mid = size / 2$) to determine which of the four children contains the target coordinate:
+\begin{itemize}
+    \item If $r < mid$ and $c < mid$: Target is in \textbf{topLeft}.
+    \item If $r < mid$ and $c \ge mid$: Target is in \textbf{topRight} (adjust $c$ to $c - mid$).
+    \item If $r \ge mid$ and $c < mid$: Target is in \textbf{bottomLeft} (adjust $r$ to $r - mid$).
+    \item If $r \ge mid$ and $c \ge mid$: Target is in \textbf{bottomRight} (adjust $r$ to $r - mid$ and $c$ to $c - mid$).
+\end{itemize}
+
+\subsection*{Complexity Analysis}
+
+\begin{itemize}
+\item \textbf{Time Complexity}: $O(\log n)$ or $O(H)$, where $H$ is the height of the tree. In the worst case, we travel from the root to a leaf at the maximum depth.
+\item \textbf{Space Complexity}: $O(\log n)$ due to the recursion stack.
+\end{itemize}
+
+\subsection*{Implementation}
+
+\begin{lstlisting}[language=C++,breaklines=true,breakatwhitespace=false,columns=fullflexible,basicstyle=\ttfamily\small]
+class Solution {
+public:
+    bool getCellValue(Node* root, int n, int r, int c) {
+        // Base case: If it's a leaf, the value is uniform across the region
+        if (root->isLeaf) {
+            return root->val;
+        }
+
+        int mid = n / 2;
+
+        // Determine which quadrant the coordinate (r, c) falls into
+        if (r < mid && c < mid) {
+            return getCellValue(root->topLeft, mid, r, c);
+        } 
+        else if (r < mid && c >= mid) {
+            // Adjust column index for the right-side quadrant
+            return getCellValue(root->topRight, mid, r, c - mid);
+        } 
+        else if (r >= mid && c < mid) {
+            // Adjust row index for the bottom-side quadrant
+            return getCellValue(root->bottomLeft, mid, r - mid, c);
+        } 
+        else {
+            // Adjust both indices for the bottom-right quadrant
+            return getCellValue(root->bottomRight, mid, r - mid, c - mid);
+        }
+    }
+};
+\end{lstlisting}
