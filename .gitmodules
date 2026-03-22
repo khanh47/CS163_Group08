@@ -1,0 +1,6 @@
+[submodule "project/source_code/DSA_Visualizer"]
+	path = project/source_code/DSA_Visualizer
+	url = https://github.com/khanh47/DSA_Visualizer.git
+[submodule "seminar/source_code/QuadTree"]
+	path = seminar/source_code/QuadTree
+	url = https://github.com/khanh47/QuadTree.git
