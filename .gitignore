@@ -1,0 +1,36 @@
+# LaTeX temporary and build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.flx
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.xdv
+
+# Intermediate files from glossaries and nomenclature packages
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+
+# Build output folders (if used)
+out/
+build/
+
+.venv
+.vscode
