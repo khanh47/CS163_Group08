@@ -1,0 +1,14 @@
+# Executables
+*.exe
+
+*.dll
+
+# build dir
+bin
+build
+
+# make/cmake file
+CMakeLists.txt
+makefile
+Makefile
+/.vscode
